@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Builder — Un plan avant le code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F2E44;
+    --navy-2: #123C59;
+    --navy-3: #17475F;
+    --cyan: #8FD3E8;
+    --cyan-dim: #4F8FA8;
+    --paper: #EAF2F5;
+    --ink: #0F2331;
+    --amber: #E3A63D;
+    --amber-dark: #C88A28;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--navy);
+    color: var(--paper);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+  }
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  a { color: inherit; }
+
+  /* blueprint grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(143, 211, 232, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(143, 211, 232, 0.09) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* NAV */
+  nav {
+    padding: 28px 24px;
+  }
+  nav .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
+  }
+  .wordmark {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+  }
+  .wordmark span { color: var(--cyan); }
+  .nav-tag {
+    font-size: 0.78rem;
+    color: var(--cyan-dim);
+  }
+
+  /* HERO */
+  header.hero {
+    padding: 40px 0 80px;
+    position: relative;
+  }
+  header.hero .wrap { max-width: 900px; }
+  .hero-tick {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    color: var(--cyan);
+    font-size: 0.82rem;
+  }
+  .hero-tick .line {
+    width: 32px;
+    height: 1px;
+    background: var(--cyan-dim);
+  }
+  h1.headline {
+    font-size: clamp(2rem, 5.2vw, 3.1rem);
+    max-width: 15ch;
+    letter-spacing: -0.01em;
+  }
+  .headline .accent { color: var(--amber); }
+  .sub {
+    margin-top: 22px;
+    max-width: 52ch;
+    font-size: 1.08rem;
+    color: #C9DCE4;
+  }
+
+  /* FORM */
+  .signup {
+    margin-top: 40px;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 4px;
+    padding: 28px;
+    max-width: 460px;
+    position: relative;
+  }
+  .signup::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: -1px; right: -1px; bottom: -1px;
+    border: 1px solid var(--cyan-dim);
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .signup label {
+    display: block;
+    font-size: 0.78rem;
+    font-family: 'IBM Plex Mono', monospace;
+    color: #3C5A6B;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+  .signup label:first-of-type { margin-top: 0; }
+  .signup input[type="email"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #B9CDD6;
+    border-radius: 3px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    background: #fff;
+    color: var(--ink);
+  }
+  .price-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .price-options label.opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: #fff;
+    border: 1px solid #B9CDD6;
+    border-radius: 3px;
+    padding: 10px 12px;
+    cursor: pointer;
+    margin: 0;
+  }
+  .price-options input[type="radio"] { accent-color: var(--navy); }
+  button.submit {
+    margin-top: 22px;
+    width: 100%;
+    background: var(--amber);
+    color: #241A05;
+    border: none;
+    padding: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  button.submit:hover { background: var(--amber-dark); }
+  .fine-print {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: #5C7686;
+  }
+  .confirm-msg {
+    display: none;
+    margin-top: 22px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    color: #1F5C33;
+    background: #DCEEE0;
+    border: 1px solid #A9CFB2;
+    padding: 12px 14px;
+    border-radius: 3px;
+  }
+
+  /* SECTION: today vs method */
+  section.compare {
+    padding: 70px 0;
+    background: var(--navy-2);
+  }
+  section.compare .wrap { max-width: 900px; }
+  .section-tag {
+    font-size: 0.82rem;
+    color: var(--cyan);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 12px;
+  }
+  section.compare h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    max-width: 22ch;
+    margin-bottom: 40px;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .compare-col h3 {
+    font-size: 0.95rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--navy-3);
+  }
+  .compare-col.no h3 { color: #E39B7A; }
+  .compare-col.yes h3 { color: var(--cyan); }
+  .compare-col ul { list-style: none; }
+  .compare-col li {
+    font-size: 0.92rem;
+    color: #C9DCE4;
+    padding: 9px 0 9px 18px;
+    position: relative;
+    border-bottom: 1px solid rgba(143,211,232,0.08);
+  }
+  .compare-col.no li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #E39B7A;
+  }
+  .compare-col.yes li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+  }
+
+  /* SECTION: blueprint timeline */
+  section.phases {
+    padding: 80px 0;
+  }
+  section.phases .wrap { max-width: 780px; }
+  section.phases h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    max-width: 22ch;
+    margin-bottom: 12px;
+  }
+  section.phases .sub-p {
+    color: #A9C4CF;
+    max-width: 50ch;
+    margin-bottom: 48px;
+    font-size: 0.98rem;
+  }
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    border-left: 1px solid var(--cyan-dim);
+  }
+  .tl-item {
+    position: relative;
+    padding-bottom: 40px;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -33px;
+    top: 4px;
+    width: 9px;
+    height: 9px;
+    background: var(--navy);
+    border: 2px solid var(--cyan);
+    border-radius: 50%;
+  }
+  .tl-item .tl-range {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan-dim);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .tl-item h3 {
+    font-size: 1.08rem;
+    margin-bottom: 6px;
+  }
+  .tl-item p {
+    font-size: 0.9rem;
+    color: #B7CDD7;
+    max-width: 46ch;
+  }
+
+  /* SECTION: not just a chatbot */
+  section.diff {
+    padding: 80px 0;
+    background: var(--navy-2);
+  }
+  section.diff .wrap { max-width: 900px; }
+  section.diff h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    max-width: 24ch;
+    margin-bottom: 44px;
+  }
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .diff-item .num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--amber);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .diff-item h3 {
+    font-size: 1.02rem;
+    margin-bottom: 10px;
+  }
+  .diff-item p {
+    font-size: 0.88rem;
+    color: #B7CDD7;
+  }
+
+  /* FOOTER CTA */
+  footer.final {
+    padding: 90px 0 60px;
+    text-align: left;
+  }
+  footer.final .wrap { max-width: 640px; }
+  footer.final h2 {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    margin-bottom: 18px;
+  }
+  footer.final .sub {
+    color: #C9DCE4;
+    margin-bottom: 0;
+  }
+  footer .credits {
+    margin-top: 70px;
+    padding-top: 24px;
+    border-top: 1px solid var(--navy-3);
+    font-size: 0.78rem;
+    color: #5C7686;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .compare-grid { grid-template-columns: 1fr; gap: 36px; }
+    .diff-grid { grid-template-columns: 1fr; gap: 30px; }
+    .price-options { grid-template-columns: 1fr; }
+    .signup { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="wordmark">SaaS<span>Builder</span></div>
+    <div class="nav-tag mono">projet en validation</div>
+  </div>
+</nav>
+
+<header class="hero grid-bg">
+  <div class="wrap">
+    <div class="hero-tick"><span class="line"></span> IDÉE → PLAN → SPÉCIFICATIONS</div>
+    <h1 class="headline">Chaque SaaS solide commence par un plan, <span class="accent">pas par du code.</span></h1>
+    <p class="sub">SaaS Builder t'accompagne de l'idée brute jusqu'à des spécifications techniques prêtes à donner à ton outil de développement — avec un vrai suivi de projet, pas une conversation qui disparaît à chaque session.</p>
+
+    <form class="signup" id="signupForm">
+      <label for="email">Ton email</label>
+      <input type="email" id="email" name="email" placeholder="toi@exemple.com" required>
+
+      <label>Si cet outil existait aujourd'hui, tu paierais combien par mois ?</label>
+      <div class="price-options">
+        <label class="opt"><input type="radio" name="price" value="0" required> Je ne paierais pas</label>
+        <label class="opt"><input type="radio" name="price" value="5-15"> 5€ – 15€</label>
+        <label class="opt"><input type="radio" name="price" value="15-30"> 15€ – 30€</label>
+        <label class="opt"><input type="radio" name="price" value="30+"> 30€ et plus</label>
+      </div>
+
+      <button type="submit" class="submit">Rejoindre la liste d'attente</button>
+      <p class="fine-print">Pas de spam. On t'écrit uniquement quand la version bêta est prête.</p>
+      <div class="confirm-msg" id="confirmMsg">✓ C'est noté — merci, tu seras averti·e en priorité.</div>
+    </form>
+  </div>
+</header>
+
+<section class="compare">
+  <div class="wrap">
+    <div class="section-tag">LE CONSTAT</div>
+    <h2>Construire un SaaS avec l'IA, aujourd'hui, ressemble souvent à ça</h2>
+    <div class="compare-grid">
+      <div class="compare-col no">
+        <h3>SANS MÉTHODE</h3>
+        <ul>
+          <li>Un chat avec ChatGPT qui repart de zéro à chaque session</li>
+          <li>Des décisions prises puis oubliées</li>
+          <li>Du code écrit avant de savoir si quelqu'un est prêt à payer</li>
+          <li>Un cahier des charges qui tient sur un post-it mental</li>
+        </ul>
+      </div>
+      <div class="compare-col yes">
+        <h3>AVEC SAAS BUILDER</h3>
+        <ul>
+          <li>Un projet qui garde en mémoire chaque décision prise</li>
+          <li>Une progression visible, phase après phase</li>
+          <li>Une hypothèse validée avant chaque investissement de temps</li>
+          <li>Un dossier de specs prêt pour ton outil de dev IA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="phases">
+  <div class="wrap">
+    <div class="section-tag">LA MÉTHODE</div>
+    <h2>11 étapes, du doute initial au dossier de construction</h2>
+    <p class="sub-p">Chaque étape se termine par un statut clair : on continue, on simplifie, ou on s'arrête. Jamais d'avancée silencieuse sur une hypothèse non vérifiée.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-range mono">PHASES 0 – 2</span>
+        <h3>Cadrer l'idée</h3>
+        <p>Reformuler le problème, vérifier qu'il est assez fréquent et douloureux, challenger la faisabilité avant d'investir du temps.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-range mono">PHASE 3</span>
+        <h3>Valider avant de construire</h3>
+        <p>Identifier la concurrence réelle, définir la différenciation, et tester la volonté de payer sur le terrain — pas en imagination.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-range mono">PHASES 4 – 6</span>
+        <h3>Définir le produit</h3>
+        <p>MVP priorisé, modèle économique, nom, et stratégie de lancement pensée pour un budget réel.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-range mono">PHASES 7 – 10</span>
+        <h3>Écrire les spécifications</h3>
+        <p>Cahier des charges fonctionnel, stack technique, sécurité, paiement — jusqu'aux tickets exploitables par un agent de développement.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-range mono">PHASE 11</span>
+        <h3>Planifier la suite</h3>
+        <p>Une roadmap MVP → V1 → V2 basée sur des résultats mesurés, pas sur des idées imaginées à l'avance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="diff">
+  <div class="wrap">
+    <div class="section-tag">POURQUOI PAS JUSTE UN CHAT DE PLUS</div>
+    <h2>Un copilote qui garde la mémoire du projet, pas seulement de la conversation</h2>
+    <div class="diff-grid">
+      <div class="diff-item">
+        <span class="num mono">01</span>
+        <h3>Ton projet ne disparaît pas</h3>
+        <p>Reprends exactement où tu t'es arrêté, avec l'historique de chaque décision visible dans ton espace de projet.</p>
+      </div>
+      <div class="diff-item">
+        <span class="num mono">02</span>
+        <h3>Jusqu'aux specs techniques</h3>
+        <p>Pas juste un résumé produit : un dossier complet, prêt à coller dans Claude Code, Antigravity, ou l'outil de ton choix.</p>
+      </div>
+      <div class="diff-item">
+        <span class="num mono">03</span>
+        <h3>Une méthode, pas un prompt</h3>
+        <p>Chaque étape vérifie ce qui doit être vrai avant de passer à la suivante — pour ne pas construire ce que personne ne veut.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="final grid-bg">
+  <div class="wrap">
+    <div class="section-tag">C'EST TOUT</div>
+    <h2>On construit ça pour de vrai si assez de monde en a besoin.</h2>
+    <p class="sub">Laisse ton email plus haut — c'est la seule façon de savoir si ce plan mérite d'être suivi jusqu'au bout.</p>
+    <div class="credits">
+      <span>SaaS Builder — nom de travail, sujet à changement</span>
+      <span>Aucune donnée revendue ni partagée</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('https://formspree.io/f/mppzgdol', {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    document.getElementById('confirmMsg').style.display = 'block';
+    this.querySelector('.submit').style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
