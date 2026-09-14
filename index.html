@@ -104,18 +104,76 @@
     font-size: 1.08rem;
     color: #C9DCE4;
   }
+  .hero-anchor {
+    display: inline-block;
+    margin-top: 36px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--cyan);
+    text-decoration: none;
+    border-bottom: 1px solid var(--cyan-dim);
+    padding-bottom: 3px;
+  }
 
-  /* FORM */
-  .signup {
-    margin-top: 40px;
+  /* SECTION: demonstration flow */
+  section.demo {
+    padding: 80px 0;
+    background: var(--navy-2);
+  }
+  section.demo .wrap { max-width: 900px; }
+  section.demo h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    max-width: 24ch;
+    margin-bottom: 44px;
+  }
+  .demo-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .demo-step {
+    display: flex;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--navy-3);
+    align-items: flex-start;
+  }
+  .demo-step:last-child { border-bottom: none; }
+  .demo-step .step-num {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--amber);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    width: 32px;
+    padding-top: 3px;
+  }
+  .demo-step h3 {
+    font-size: 1.02rem;
+    margin-bottom: 6px;
+  }
+  .demo-step p {
+    font-size: 0.9rem;
+    color: #B7CDD7;
+    max-width: 52ch;
+  }
+  .demo-step .quote {
+    font-style: italic;
+    color: var(--cyan);
+  }
+
+  /* SECTION: signup form */
+  section.rejoindre {
+    padding: 90px 0;
+  }
+  section.rejoindre .wrap { max-width: 640px; }
+  .form-card {
     background: var(--paper);
     color: var(--ink);
     border-radius: 4px;
-    padding: 28px;
-    max-width: 460px;
+    padding: 36px 28px;
     position: relative;
   }
-  .signup::before {
+  .form-card::before {
     content: "";
     position: absolute;
     top: -1px; left: -1px; right: -1px; bottom: -1px;
@@ -124,16 +182,42 @@
     pointer-events: none;
     opacity: 0.4;
   }
-  .signup label {
-    display: block;
-    font-size: 0.78rem;
-    font-family: 'IBM Plex Mono', monospace;
-    color: #3C5A6B;
-    margin-bottom: 6px;
-    margin-top: 16px;
+  .form-card h2 {
+    color: var(--ink);
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    margin-bottom: 12px;
   }
-  .signup label:first-of-type { margin-top: 0; }
-  .signup input[type="email"] {
+  .form-card .form-intro {
+    font-size: 0.95rem;
+    color: #3C5A6B;
+    max-width: 48ch;
+    margin-bottom: 28px;
+  }
+  .form-block {
+    margin-bottom: 26px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid #D6E3E8;
+  }
+  .form-block:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  .form-block .block-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: #3C5A6B;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .form-block label.q {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .form-block input[type="email"] {
     width: 100%;
     padding: 12px 14px;
     border: 1px solid #B9CDD6;
@@ -164,7 +248,7 @@
   }
   .price-options input[type="radio"] { accent-color: var(--navy); }
   button.submit {
-    margin-top: 22px;
+    margin-top: 26px;
     width: 100%;
     background: var(--amber);
     color: #241A05;
@@ -364,7 +448,7 @@
     .compare-grid { grid-template-columns: 1fr; gap: 36px; }
     .diff-grid { grid-template-columns: 1fr; gap: 30px; }
     .price-options { grid-template-columns: 1fr; }
-    .signup { padding: 22px; }
+    .form-card { padding: 22px; }
   }
 </style>
 </head>
@@ -380,32 +464,17 @@
 <header class="hero grid-bg">
   <div class="wrap">
     <div class="hero-tick"><span class="line"></span> IDÉE → PLAN → SPÉCIFICATIONS</div>
-    <h1 class="headline">Chaque SaaS solide commence par un plan, <span class="accent">pas par du code.</span></h1>
-    <p class="sub">SaaS Builder t'accompagne de l'idée brute jusqu'à des spécifications techniques prêtes à donner à ton outil de développement — avec un vrai suivi de projet, pas une conversation qui disparaît à chaque session.</p>
-
-    <form class="signup" id="signupForm">
-      <label for="email">Ton email</label>
-      <input type="email" id="email" name="email" placeholder="toi@exemple.com" required>
-
-      <label>Si cet outil existait aujourd'hui, tu paierais combien par mois ?</label>
-      <div class="price-options">
-        <label class="opt"><input type="radio" name="price" value="0" required> Je ne paierais pas</label>
-        <label class="opt"><input type="radio" name="price" value="5-15"> 5€ – 15€</label>
-        <label class="opt"><input type="radio" name="price" value="15-30"> 15€ – 30€</label>
-        <label class="opt"><input type="radio" name="price" value="30+"> 30€ et plus</label>
-      </div>
-
-      <button type="submit" class="submit">Rejoindre la liste d'attente</button>
-      <p class="fine-print">Pas de spam. On t'écrit uniquement quand la version bêta est prête.</p>
-      <div class="confirm-msg" id="confirmMsg">✓ C'est noté — merci, tu seras averti·e en priorité.</div>
-    </form>
+    <h1 class="headline">Ne commence pas par coder. <span class="accent">Commence par savoir quoi construire.</span></h1>
+    <p class="sub">SaaS Builder transforme ton idée de SaaS en un projet clairement défini — cible, problème, MVP, fonctionnalités, règles métier — jusqu'à un dossier de spécifications prêt à donner à Claude Code, Antigravity, ou ton développeur. Ton projet ne repart jamais de zéro, contrairement à une conversation avec un chatbot.</p>
+    <a href="#rejoindre" class="hero-anchor">Voir comment ça marche ↓</a>
   </div>
 </header>
 
 <section class="compare">
   <div class="wrap">
     <div class="section-tag">LE CONSTAT</div>
-    <h2>Construire un SaaS avec l'IA, aujourd'hui, ressemble souvent à ça</h2>
+    <h2>Tu as une idée de SaaS. Mais tu ne sais pas encore quoi construire, précisément.</h2>
+    <p class="sub-p" style="color:#A9C4CF; max-width:60ch; margin-bottom:40px; font-size:0.98rem;">Tu demandes conseil à une IA, tu ouvres plusieurs conversations, tu changes d'avis, tu ajoutes des fonctionnalités... et après quelques jours, ton projet devient difficile à suivre. Ton idée mérite mieux qu'une conversation perdue dans un chatbot.</p>
     <div class="compare-grid">
       <div class="compare-col no">
         <h3>SANS MÉTHODE</h3>
@@ -489,11 +558,81 @@
   </div>
 </section>
 
+<section class="demo">
+  <div class="wrap">
+    <div class="section-tag">COMMENT ÇA MARCHE</div>
+    <h2>De l'idée floue au dossier prêt à construire</h2>
+    <div class="demo-flow">
+      <div class="demo-step">
+        <span class="step-num mono">01</span>
+        <div>
+          <h3>Ton idée</h3>
+          <p class="quote">«Je veux créer un SaaS pour que les salons de coiffure gèrent leurs rendez-vous et rappels clients.»</p>
+        </div>
+      </div>
+      <div class="demo-step">
+        <span class="step-num mono">02</span>
+        <div>
+          <h3>SaaS Builder</h3>
+          <p>Questions, analyse, décisions — à chaque étape, tu valides avant d'avancer à la suivante.</p>
+        </div>
+      </div>
+      <div class="demo-step">
+        <span class="step-num mono">03</span>
+        <div>
+          <h3>Projet structuré</h3>
+          <p>Cible, problème, MVP, fonctionnalités, règles métier, spécifications — tout est défini et organisé.</p>
+        </div>
+      </div>
+      <div class="demo-step">
+        <span class="step-num mono">04</span>
+        <div>
+          <h3>Prêt à construire</h3>
+          <p>Un dossier complet à donner à Claude Code, Antigravity, ou ton développeur.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rejoindre" id="rejoindre">
+  <div class="wrap">
+    <div class="form-card">
+      <h2>Aide-nous à construire SaaS Builder</h2>
+      <p class="form-intro">SaaS Builder est encore en phase de validation. Laisse ton email pour être informé du lancement, et dis-nous la valeur que tu accordes à cet outil. Aucun achat n'est demandé aujourd'hui.</p>
+
+      <form id="signupForm">
+        <div class="form-block">
+          <span class="block-num mono">① TON EMAIL</span>
+          <label class="q" for="email">On t'écrit uniquement quand la version bêta est prête.</label>
+          <input type="email" id="email" name="email" placeholder="toi@exemple.com" required>
+        </div>
+
+        <div class="form-block">
+          <span class="block-num mono">② TON AVIS</span>
+          <label class="q">Si SaaS Builder existait aujourd'hui, tu paierais combien par mois pour l'utiliser ?</label>
+          <div class="price-options">
+            <label class="opt"><input type="radio" name="price" value="0" required> Je ne paierais pas</label>
+            <label class="opt"><input type="radio" name="price" value="5-15"> 5€ – 15€</label>
+            <label class="opt"><input type="radio" name="price" value="15-30"> 15€ – 30€</label>
+            <label class="opt"><input type="radio" name="price" value="30-50"> 30€ – 50€</label>
+            <label class="opt"><input type="radio" name="price" value="50+"> Plus de 50€</label>
+          </div>
+        </div>
+
+        <button type="submit" class="submit">Rejoindre la liste d'attente</button>
+        <p class="fine-print">Aucun achat aujourd'hui. Ta réponse nous aide à valider le projet.</p>
+        <div class="confirm-msg" id="confirmMsg">✓ Merci ! Ta réponse a bien été enregistrée — on te tient informé des prochaines étapes.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <footer class="final grid-bg">
   <div class="wrap">
     <div class="section-tag">C'EST TOUT</div>
     <h2>On construit ça pour de vrai si assez de monde en a besoin.</h2>
-    <p class="sub">Laisse ton email plus haut — c'est la seule façon de savoir si ce plan mérite d'être suivi jusqu'au bout.</p>
+    <p class="sub">Ta réponse juste au-dessus est la seule façon de savoir si ce plan mérite d'être suivi jusqu'au bout.</p>
     <div class="credits">
       <span>SaaS Builder — nom de travail, sujet à changement</span>
       <span>Aucune donnée revendue ni partagée</span>
