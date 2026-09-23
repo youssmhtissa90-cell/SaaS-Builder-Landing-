@@ -652,6 +652,12 @@
 </footer>
 
 <script>
+  document.getElementById('email').addEventListener('blur', function() {
+    if (this.value.includes('@')) {
+      gtag('event', 'champ_email_rempli');
+    }
+  });
+
   document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
     fetch('https://formspree.io/f/mppzgdol', {
@@ -659,6 +665,7 @@
       body: new FormData(this),
       headers: { 'Accept': 'application/json' }
     });
+    gtag('event', 'formulaire_soumis');
     document.getElementById('confirmMsg').style.display = 'block';
     this.querySelector('.submit').style.display = 'none';
   });
